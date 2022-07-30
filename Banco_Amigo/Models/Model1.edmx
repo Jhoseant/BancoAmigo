@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BancoAmigoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ba_persona">
+          <Key>
+            <PropertyRef Name="pe_idpersona" />
+          </Key>
+          <Property Name="pe_idpersona" Type="int" Nullable="false" />
+          <Property Name="pe_cedula" Type="varchar" MaxLength="12" />
+          <Property Name="pe_nombre" Type="varchar" MaxLength="50" />
+          <Property Name="pe_apellido" Type="varchar" MaxLength="50" />
+          <Property Name="pe_fecha_nacimiento" Type="date" />
+          <Property Name="pe_direccion" Type="varchar" MaxLength="100" />
+          <Property Name="pe_sexo" Type="varchar" MaxLength="1" />
+          <Property Name="pe_correo" Type="varchar" MaxLength="50" />
+          <Property Name="pe_estado" Type="varchar" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="ba_roles">
+          <Key>
+            <PropertyRef Name="ro_idrol" />
+          </Key>
+          <Property Name="ro_idrol" Type="int" Nullable="false" />
+          <Property Name="ro_rol" Type="varchar" MaxLength="30" />
+          <Property Name="ro_estado" Type="varchar" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="ba_usuarios">
+          <Key>
+            <PropertyRef Name="us_idusuario" />
+          </Key>
+          <Property Name="us_idusuario" Type="int" Nullable="false" />
+          <Property Name="us_idpersona" Type="int" Nullable="false" />
+          <Property Name="us_idrol" Type="int" Nullable="false" />
+          <Property Name="us_usuario" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="us_clave" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="us_fecha_registro" Type="date" Nullable="false" />
+          <Property Name="us_fecha_modificacion" Type="date" />
+          <Property Name="us_estado" Type="varchar" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK_ba_usuarios_ba_persona">
+          <End Role="ba_persona" Type="Self.ba_persona" Multiplicity="1" />
+          <End Role="ba_usuarios" Type="Self.ba_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ba_persona">
+              <PropertyRef Name="pe_idpersona" />
+            </Principal>
+            <Dependent Role="ba_usuarios">
+              <PropertyRef Name="us_idpersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ba_usuarios_ba_roles">
+          <End Role="ba_roles" Type="Self.ba_roles" Multiplicity="1" />
+          <End Role="ba_usuarios" Type="Self.ba_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ba_roles">
+              <PropertyRef Name="ro_idrol" />
+            </Principal>
+            <Dependent Role="ba_usuarios">
+              <PropertyRef Name="us_idrol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BancoAmigoModelStoreContainer">
+          <EntitySet Name="ba_persona" EntityType="Self.ba_persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ba_roles" EntityType="Self.ba_roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ba_usuarios" EntityType="Self.ba_usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ba_usuarios_ba_persona" Association="Self.FK_ba_usuarios_ba_persona">
+            <End Role="ba_persona" EntitySet="ba_persona" />
+            <End Role="ba_usuarios" EntitySet="ba_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ba_usuarios_ba_roles" Association="Self.FK_ba_usuarios_ba_roles">
+            <End Role="ba_roles" EntitySet="ba_roles" />
+            <End Role="ba_usuarios" EntitySet="ba_usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BancoAmigoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ba_persona">
+          <Key>
+            <PropertyRef Name="pe_idpersona" />
+          </Key>
+          <Property Name="pe_idpersona" Type="Int32" Nullable="false" />
+          <Property Name="pe_cedula" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="pe_nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pe_apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pe_fecha_nacimiento" Type="DateTime" Precision="0" />
+          <Property Name="pe_direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="pe_sexo" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="pe_correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pe_estado" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ba_usuarios" Relationship="Self.FK_ba_usuarios_ba_persona" FromRole="ba_persona" ToRole="ba_usuarios" />
+        </EntityType>
+        <EntityType Name="ba_roles">
+          <Key>
+            <PropertyRef Name="ro_idrol" />
+          </Key>
+          <Property Name="ro_idrol" Type="Int32" Nullable="false" />
+          <Property Name="ro_rol" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ro_estado" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ba_usuarios" Relationship="Self.FK_ba_usuarios_ba_roles" FromRole="ba_roles" ToRole="ba_usuarios" />
+        </EntityType>
+        <EntityType Name="ba_usuarios">
+          <Key>
+            <PropertyRef Name="us_idusuario" />
+          </Key>
+          <Property Name="us_idusuario" Type="Int32" Nullable="false" />
+          <Property Name="us_idpersona" Type="Int32" Nullable="false" />
+          <Property Name="us_idrol" Type="Int32" Nullable="false" />
+          <Property Name="us_usuario" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="us_clave" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="us_fecha_registro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="us_fecha_modificacion" Type="DateTime" Precision="0" />
+          <Property Name="us_estado" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ba_persona" Relationship="Self.FK_ba_usuarios_ba_persona" FromRole="ba_usuarios" ToRole="ba_persona" />
+          <NavigationProperty Name="ba_roles" Relationship="Self.FK_ba_usuarios_ba_roles" FromRole="ba_usuarios" ToRole="ba_roles" />
+        </EntityType>
+        <Association Name="FK_ba_usuarios_ba_persona">
+          <End Role="ba_persona" Type="Self.ba_persona" Multiplicity="1" />
+          <End Role="ba_usuarios" Type="Self.ba_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ba_persona">
+              <PropertyRef Name="pe_idpersona" />
+            </Principal>
+            <Dependent Role="ba_usuarios">
+              <PropertyRef Name="us_idpersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ba_usuarios_ba_roles">
+          <End Role="ba_roles" Type="Self.ba_roles" Multiplicity="1" />
+          <End Role="ba_usuarios" Type="Self.ba_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ba_roles">
+              <PropertyRef Name="ro_idrol" />
+            </Principal>
+            <Dependent Role="ba_usuarios">
+              <PropertyRef Name="us_idrol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BancoAmigoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ba_persona" EntityType="Self.ba_persona" />
+          <EntitySet Name="ba_roles" EntityType="Self.ba_roles" />
+          <EntitySet Name="ba_usuarios" EntityType="Self.ba_usuarios" />
+          <AssociationSet Name="FK_ba_usuarios_ba_persona" Association="Self.FK_ba_usuarios_ba_persona">
+            <End Role="ba_persona" EntitySet="ba_persona" />
+            <End Role="ba_usuarios" EntitySet="ba_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ba_usuarios_ba_roles" Association="Self.FK_ba_usuarios_ba_roles">
+            <End Role="ba_roles" EntitySet="ba_roles" />
+            <End Role="ba_usuarios" EntitySet="ba_usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BancoAmigoModelStoreContainer" CdmEntityContainer="BancoAmigoEntities">
+          <EntitySetMapping Name="ba_persona">
+            <EntityTypeMapping TypeName="BancoAmigoModel.ba_persona">
+              <MappingFragment StoreEntitySet="ba_persona">
+                <ScalarProperty Name="pe_idpersona" ColumnName="pe_idpersona" />
+                <ScalarProperty Name="pe_cedula" ColumnName="pe_cedula" />
+                <ScalarProperty Name="pe_nombre" ColumnName="pe_nombre" />
+                <ScalarProperty Name="pe_apellido" ColumnName="pe_apellido" />
+                <ScalarProperty Name="pe_fecha_nacimiento" ColumnName="pe_fecha_nacimiento" />
+                <ScalarProperty Name="pe_direccion" ColumnName="pe_direccion" />
+                <ScalarProperty Name="pe_sexo" ColumnName="pe_sexo" />
+                <ScalarProperty Name="pe_correo" ColumnName="pe_correo" />
+                <ScalarProperty Name="pe_estado" ColumnName="pe_estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ba_roles">
+            <EntityTypeMapping TypeName="BancoAmigoModel.ba_roles">
+              <MappingFragment StoreEntitySet="ba_roles">
+                <ScalarProperty Name="ro_idrol" ColumnName="ro_idrol" />
+                <ScalarProperty Name="ro_rol" ColumnName="ro_rol" />
+                <ScalarProperty Name="ro_estado" ColumnName="ro_estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ba_usuarios">
+            <EntityTypeMapping TypeName="BancoAmigoModel.ba_usuarios">
+              <MappingFragment StoreEntitySet="ba_usuarios">
+                <ScalarProperty Name="us_idusuario" ColumnName="us_idusuario" />
+                <ScalarProperty Name="us_idpersona" ColumnName="us_idpersona" />
+                <ScalarProperty Name="us_idrol" ColumnName="us_idrol" />
+                <ScalarProperty Name="us_usuario" ColumnName="us_usuario" />
+                <ScalarProperty Name="us_clave" ColumnName="us_clave" />
+                <ScalarProperty Name="us_fecha_registro" ColumnName="us_fecha_registro" />
+                <ScalarProperty Name="us_fecha_modificacion" ColumnName="us_fecha_modificacion" />
+                <ScalarProperty Name="us_estado" ColumnName="us_estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
