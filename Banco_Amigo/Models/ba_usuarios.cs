@@ -11,7 +11,7 @@ namespace Banco_Amigo.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    prueba
     public partial class ba_usuarios
     {
         public int us_idusuario { get; set; }
