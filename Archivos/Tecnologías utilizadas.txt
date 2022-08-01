@@ -1,0 +1,20 @@
+Tecnologías utilizadas
+asp.net
+
+
+instalar entity framework
+clic derecho en proyecto -> administrar paquetes nuget ->examinar y busar entityframework
+
+agregar base de datos
+clic derecho en el model del proyecto, agregar-> nuevo elemento
+seleccionar DATA -> ADO.NET entity data Model-> EF Designer desde base de datos.
+Nueva conexión -> pegar la base de datos en "nombre del servidor:"
+	Obtener nombre del servidor en sql server clicderecho en el servidor y propiedades
+Selecciona la base "bancoAmigo" y aceptar.
+
+selecciona las tablas que vayamos a utilizar. en este caso todas, finalizar
+
+Crear vista y controlador de la base de datos. 
+click derecho en controllers ->agregar ->controller
+seleccionar MVC 5 controllerew whith views. using entity framework. agregar
+clase del modelo: es la tabla ba_persona, clase del contexto de datos: bancoAmigoEntities, usar pagina de diseño selecciona el layout, nombre del controlador y agregar.
