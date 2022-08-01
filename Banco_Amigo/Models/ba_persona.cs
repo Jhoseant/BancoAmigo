@@ -6,7 +6,7 @@
 //     Los cambios manuales en este archivo se sobrescribirán si se regenera el código.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
+using System.ComponentModel;
 namespace Banco_Amigo.Models
 {
     using System;
@@ -21,16 +21,30 @@ namespace Banco_Amigo.Models
         }
     
         public int pe_idpersona { get; set; }
+        [DisplayName("Cédula")]
         public string pe_cedula { get; set; }
+        [DisplayName("Nombre")]
         public string pe_nombre { get; set; }
+        [DisplayName("Apellido")]
         public string pe_apellido { get; set; }
+        [DisplayName("Fecha de Nacimiento")]
         public Nullable<System.DateTime> pe_fecha_nacimiento { get; set; }
+        [DisplayName("Dirección")]
         public string pe_direccion { get; set; }
+        [DisplayName("Sexo")]
         public string pe_sexo { get; set; }
+        [DisplayName("Correo")]
         public string pe_correo { get; set; }
         public string pe_estado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ba_usuarios> ba_usuarios { get; set; }
+
+        public enum Genero
+        {
+            Masculino,
+            Femenino,
+            Otro
+        }
     }
 }

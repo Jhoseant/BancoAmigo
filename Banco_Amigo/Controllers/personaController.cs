@@ -50,6 +50,23 @@ namespace Banco_Amigo.Controllers
         {
             if (ModelState.IsValid)
             {
+                //calcula el nuevo ID de persona
+                int Last_register = db.ba_persona.Count();
+                Last_register++;
+                ba_persona.pe_idpersona = Last_register;
+
+                //Agrega el genero
+                if (ba_persona.pe_sexo == "Masculino")
+                    ba_persona.pe_sexo = "M";
+                else if (ba_persona.pe_sexo == "Femenino")
+                    ba_persona.pe_sexo = "F";
+                else
+                    ba_persona.pe_sexo = "O";
+
+                //Estado por default
+                ba_persona.pe_estado = "A";
+
+                //agrega y guarda en BD
                 db.ba_persona.Add(ba_persona);
                 db.SaveChanges();
                 return RedirectToAction("Index");
