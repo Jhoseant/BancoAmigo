@@ -1,0 +1,35 @@
+﻿@model Banco_Amigo.Models.ba_roles
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ba_roles</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ro_rol)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ro_rol)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ro_estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ro_estado)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ro_idrol }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

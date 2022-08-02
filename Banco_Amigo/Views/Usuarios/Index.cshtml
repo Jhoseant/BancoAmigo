@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Banco_Amigo.Models.ba_usuarios>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.us_usuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.us_clave)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.us_fecha_registro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.us_fecha_modificacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.us_estado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ba_persona.pe_cedula)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ba_roles.ro_rol)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.us_usuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.us_clave)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.us_fecha_registro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.us_fecha_modificacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.us_estado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ba_persona.pe_cedula)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ba_roles.ro_rol)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.us_idusuario }) |
+            @Html.ActionLink("Details", "Details", new { id=item.us_idusuario }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.us_idusuario })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,81 @@
+﻿@model Banco_Amigo.Models.ba_usuarios
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ba_usuarios</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.us_usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_usuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_clave)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_clave)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_fecha_registro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_fecha_registro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_fecha_modificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_fecha_modificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ba_persona.pe_cedula)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ba_persona.pe_cedula)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ba_roles.ro_rol)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ba_roles.ro_rol)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
