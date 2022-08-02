@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 namespace Banco_Amigo.Models
 {
     using System;
@@ -22,6 +24,7 @@ namespace Banco_Amigo.Models
     
         public int pe_idpersona { get; set; }
         [DisplayName("Cédula")]
+        [StringLength(10)]
         public string pe_cedula { get; set; }
         [DisplayName("Nombre")]
         public string pe_nombre { get; set; }

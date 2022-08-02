@@ -46,33 +46,50 @@ namespace Banco_Amigo.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona ba_persona)
+        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, string txt_usuario, string txt_clave)
         {
             if (ModelState.IsValid)
             {
                 //calcula el nuevo ID de persona
-                int Last_register = db.ba_persona.Count();
-                Last_register++;
-                ba_persona.pe_idpersona = Last_register;
+                int new_IDPersona = db.ba_persona.Count();
+                new_IDPersona++;
+                Persona.pe_idpersona = new_IDPersona;
 
                 //Agrega el genero
-                if (ba_persona.pe_sexo == "Masculino")
-                    ba_persona.pe_sexo = "M";
-                else if (ba_persona.pe_sexo == "Femenino")
-                    ba_persona.pe_sexo = "F";
+                if (Persona.pe_sexo == "Masculino")
+                    Persona.pe_sexo = "M";
+                else if (Persona.pe_sexo == "Femenino")
+                    Persona.pe_sexo = "F";
                 else
-                    ba_persona.pe_sexo = "O";
+                    Persona.pe_sexo = "O";
 
                 //Estado por default
-                ba_persona.pe_estado = "A";
+                Persona.pe_estado = "A";
 
+                //Usuario
+                ba_usuarios Usuarios = new ba_usuarios();
+
+                // calcula el nuevo ID de persona
+                int new_IDUsuario = db.ba_usuarios.Count();
+                new_IDUsuario++;
+                Usuarios.us_idusuario = new_IDUsuario;
+
+                //setea datos de usuario
+                Usuarios.us_idpersona = new_IDPersona;
+                Usuarios.us_idrol = 2;
+                Usuarios.us_usuario = txt_usuario;
+                Usuarios.us_clave = txt_clave;
+                Usuarios.us_fecha_registro = DateTime.Now;
+                Usuarios.us_estado = "A";
+                
                 //agrega y guarda en BD
-                db.ba_persona.Add(ba_persona);
+                db.ba_persona.Add(Persona);
+                db.ba_usuarios.Add(Usuarios);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(ba_persona);
+            return View(Persona);
         }
 
         // GET: ba_persona/Edit/5

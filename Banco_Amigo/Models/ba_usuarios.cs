@@ -6,6 +6,7 @@
 //     Los cambios manuales en este archivo se sobrescribirán si se regenera el código.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using System.ComponentModel;
 
 namespace Banco_Amigo.Models
 {
@@ -17,7 +18,9 @@ namespace Banco_Amigo.Models
         public int us_idusuario { get; set; }
         public int us_idpersona { get; set; }
         public int us_idrol { get; set; }
+        [DisplayName("Usuario")]
         public string us_usuario { get; set; }
+        [DisplayName("Clave")]
         public string us_clave { get; set; }
         public System.DateTime us_fecha_registro { get; set; }
         public Nullable<System.DateTime> us_fecha_modificacion { get; set; }
