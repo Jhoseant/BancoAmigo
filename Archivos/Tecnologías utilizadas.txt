@@ -1,13 +1,16 @@
 Tecnologías utilizadas
 asp.net
 
+Creación del proyecto MVC con entity framework.
+Archivo -> Nnuevo proyecto -> Aplicación web ASP.net (net framework)
+Seleccionar MVC y crear.
 
 instalar entity framework
 clic derecho en proyecto -> administrar paquetes nuget ->examinar y busar entityframework
 
 agregar base de datos
-clic derecho en el model del proyecto, agregar-> nuevo elemento
-seleccionar DATA -> ADO.NET entity data Model-> EF Designer desde base de datos.
+clic derecho en "models" del proyecto, agregar -> nuevo elemento
+seleccionar DATA -> ADO.NET entity data Model-> EF Designer desde base de datos. Aceptar
 Nueva conexión -> pegar la base de datos en "nombre del servidor:"
 	Obtener nombre del servidor en sql server clicderecho en el servidor y propiedades
 Selecciona la base "bancoAmigo" y aceptar.
