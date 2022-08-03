@@ -46,10 +46,15 @@ namespace Banco_Amigo.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, string txt_usuario, string txt_clave)
+        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, string txt_usuario, string txt_clave, string txt_clave2)
         {
             if (ModelState.IsValid)
             {
+                //valida que la contraseña sea igual
+                if (txt_clave != txt_clave2) {
+                    Console.WriteLine("No coincide");
+                }
+
                 //calcula el nuevo ID de persona
                 int new_IDPersona = db.ba_persona.Count();
                 new_IDPersona++;

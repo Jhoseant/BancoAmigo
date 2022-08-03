@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Banco_Amigo.Models
 {
@@ -18,8 +19,10 @@ namespace Banco_Amigo.Models
         public int us_idusuario { get; set; }
         public int us_idpersona { get; set; }
         public int us_idrol { get; set; }
+        [Required(ErrorMessage ="El usuario es requerido")]
         [DisplayName("Usuario")]
         public string us_usuario { get; set; }
+        [Required(ErrorMessage = "La contraseña es requerida")]
         [DisplayName("Clave")]
         public string us_clave { get; set; }
         public System.DateTime us_fecha_registro { get; set; }
