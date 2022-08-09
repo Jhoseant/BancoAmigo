@@ -18,3 +18,17 @@ Crear vista y controlador de la base de datos.
 click derecho en controllers ->agregar ->controller
 seleccionar MVC 5 controllerew whith views. using entity framework. agregar
 clase del modelo: es la tabla ba_persona, clase del contexto de datos: bancoAmigoEntities, usar pagina de diseño selecciona el layout, nombre del controlador y agregar.
+
+--Base de datos by Somee.com
+user: Jhoseant
+psw: BDBancoAmigo2022
+
+Datos para conección.
+workstation id=BDBancoAmigo.mssql.somee.com;
+packet size=4096;
+
+user id=Jhoseant_SQLLogin_1;
+pwd=668hsq7g58;
+data source=BDBancoAmigo.mssql.somee.com;
+persist security info=False;
+initial catalog=BDBancoAmigo
