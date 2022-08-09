@@ -1,0 +1,75 @@
+﻿@model Banco_Amigo.Models.ba_usuarios
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ba_usuarios</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.us_usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_usuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_clave)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_clave)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_fecha_registro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_fecha_registro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_fecha_modificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_fecha_modificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.us_estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.us_estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ba_persona.pe_cedula)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ba_persona.pe_cedula)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ba_roles.ro_rol)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ba_roles.ro_rol)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.us_idusuario }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
