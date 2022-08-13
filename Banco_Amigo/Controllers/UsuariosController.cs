@@ -53,12 +53,6 @@ namespace Banco_Amigo.Controllers
         {
             if (ModelState.IsValid)
             {
-                ba_persona ba_persona = db.ba_persona.Find(ba_usuarios.us_idpersona);
-                ba_roles ba_roles = db.ba_roles.Find(ba_usuarios.us_idrol);
-
-                ba_usuarios.ba_persona = ba_persona;
-                ba_usuarios.ba_roles = ba_roles;
-
                 db.ba_usuarios.Add(ba_usuarios);
                 db.SaveChanges();
                 return RedirectToAction("Index");
