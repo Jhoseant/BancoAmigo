@@ -32,3 +32,10 @@ pwd=668hsq7g58;
 data source=BDBancoAmigo.mssql.somee.com;
 persist security info=False;
 initial catalog=BDBancoAmigo
+
+--Agregar modelo para Sp de la base de Datos
+sp_ValidaRegistroUsuario
+doble click en Model1.edmx
+click derecho -> Actualiza modelo de base de datos -> selecciona el sp a mapear -> Finalizar
+
+dale que no modifiqué los modelos de las tablas.

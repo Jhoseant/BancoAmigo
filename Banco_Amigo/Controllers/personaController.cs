@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -46,13 +47,34 @@ namespace Banco_Amigo.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, string txt_usuario, string txt_clave, string txt_clave2)
+        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, string txt_usuario, string txt_clave, string txt_ConfirmarClave)
         {
             if (ModelState.IsValid)
             {
                 //valida que la contraseña sea igual
-                if (txt_clave != txt_clave2) {
-                    Console.WriteLine("No coincide");
+                if (txt_clave != txt_ConfirmarClave) {
+                    ViewData["Mensaje"] = "Las contraseñas no coinciden";
+                    return View();
+                }
+
+                //Llama Sp de Validación de registro de usuario sp_ValidaRegistroUsuario.
+                string cod = "";
+                string mensaje = "";
+
+                var codParameter = cod != null ?
+                new ObjectParameter("cod", cod) :
+                new ObjectParameter("cod", typeof(string));
+
+                var mensajeParameter = mensaje != null ?
+                    new ObjectParameter("mensaje", mensaje) :
+                    new ObjectParameter("mensaje", typeof(string));
+
+                int exec = db.sp_ValidaRegistroUsuario(Persona.pe_correo, txt_clave, codParameter, mensajeParameter);
+
+                if (codParameter.Value.ToString() != "00")
+                {
+                    ViewData["Mensaje"] = mensajeParameter.Value.ToString();
+                    return View();
                 }
 
                 //calcula el nuevo ID de persona
@@ -90,7 +112,7 @@ namespace Banco_Amigo.Controllers
                 //agrega y guarda en BD
                 db.ba_persona.Add(Persona);
                 db.ba_usuarios.Add(Usuarios);
-                db.SaveChanges();
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 

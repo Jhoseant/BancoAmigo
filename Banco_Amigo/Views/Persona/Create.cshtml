@@ -23,6 +23,12 @@
             @Html.ValidationMessageFor(model => model.pe_idpersona, "", new { @class = "text-danger" })
         </div>
     </!--div-->
+    @if (ViewData["Mensaje"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewData["Mensaje"]
+        </div>
+    }
 
     <div class="form-group">
         @Html.LabelFor(model => model.pe_cedula, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -101,7 +107,7 @@
     <div class="form-group">
         <label class="control-label col-md-2" for="lbl_Clave2">Confirma la contraseña</label>
         <div class="col-md-10">
-            <input class="form-control text_box single_line" id="txt_clave2" name="txt_clave2" type="password" value="">
+            <input class="form-control text_box single_line" id="txt_ConfirmarClave" name="txt_ConfirmarClave" type="password" value="">
         </div>
     </div>
 
