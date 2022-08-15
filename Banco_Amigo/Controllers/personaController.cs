@@ -39,6 +39,11 @@ namespace Banco_Amigo.Controllers
         // GET: ba_persona/Create
         public ActionResult Create()
         {
+            ViewBag.pregunta1 = new SelectList(db.ba_preguntas, "pr_idpregunta", "pr_pregunta");
+            ViewBag.pregunta2 = new SelectList(db.ba_preguntas, "pr_idpregunta", "pr_pregunta");
+            ViewBag.pregunta3 = new SelectList(db.ba_preguntas, "pr_idpregunta", "pr_pregunta");
+            ViewBag.pregunta4 = new SelectList(db.ba_preguntas, "pr_idpregunta", "pr_pregunta");
+            ViewBag.pregunta5 = new SelectList(db.ba_preguntas, "pr_idpregunta", "pr_pregunta");
             return View();
         }
 
@@ -47,7 +52,9 @@ namespace Banco_Amigo.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, string txt_usuario, string txt_clave, string txt_ConfirmarClave)
+        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, 
+            string txt_usuario, string txt_clave, string txt_ConfirmarClave, 
+            string pregunta1, string txt_respuesta1, string pregunta2, string txt_respuesta2, string pregunta3, string txt_respuesta3, string pregunta4, string txt_respuesta4, string pregunta5, string txt_respuesta5)
         {
             if (ModelState.IsValid)
             {
@@ -62,8 +69,8 @@ namespace Banco_Amigo.Controllers
                 string mensaje = "";
 
                 var codParameter = cod != null ?
-                new ObjectParameter("cod", cod) :
-                new ObjectParameter("cod", typeof(string));
+                    new ObjectParameter("cod", cod) :
+                    new ObjectParameter("cod", typeof(string));
 
                 var mensajeParameter = mensaje != null ?
                     new ObjectParameter("mensaje", mensaje) :
@@ -93,10 +100,8 @@ namespace Banco_Amigo.Controllers
                 //Estado por default
                 Persona.pe_estado = "A";
 
-                //Usuario
-                ba_usuarios Usuarios = new ba_usuarios();
-
                 // calcula el nuevo ID de persona
+                ba_usuarios Usuarios = new ba_usuarios();
                 int new_IDUsuario = db.ba_usuarios.Count();
                 new_IDUsuario++;
                 Usuarios.us_idusuario = new_IDUsuario;
@@ -112,7 +117,28 @@ namespace Banco_Amigo.Controllers
                 //agrega y guarda en BD
                 db.ba_persona.Add(Persona);
                 db.ba_usuarios.Add(Usuarios);
-                //db.SaveChanges();
+                db.SaveChanges();
+
+                //inserta preguntas y respuestas
+                ba_respuestausuario RespuestasUsuarios = new ba_respuestausuario();
+
+                List<ba_respuestausuario> respuestas = new List<ba_respuestausuario>();
+                respuestas.Add(new ba_respuestausuario { ru_idpregunta = Int32.Parse(pregunta1), ru_respuesta = txt_respuesta1 });
+                respuestas.Add(new ba_respuestausuario { ru_idpregunta = Int32.Parse(pregunta2), ru_respuesta = txt_respuesta2 });
+                respuestas.Add(new ba_respuestausuario { ru_idpregunta = Int32.Parse(pregunta3), ru_respuesta = txt_respuesta3 });
+                respuestas.Add(new ba_respuestausuario { ru_idpregunta = Int32.Parse(pregunta4), ru_respuesta = txt_respuesta4 });
+                respuestas.Add(new ba_respuestausuario { ru_idpregunta = Int32.Parse(pregunta5), ru_respuesta = txt_respuesta5 });
+
+                foreach (ba_respuestausuario i in respuestas)
+                {
+                    int new_IDRespuesta = db.ba_respuestausuario.Count();
+                    new_IDRespuesta++;
+
+                    i.ru_idrespuesta = new_IDRespuesta;
+                    i.ru_idusuario = new_IDUsuario;
+                    db.ba_respuestausuario.Add(i);
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 

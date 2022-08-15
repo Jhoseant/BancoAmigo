@@ -139,6 +139,12 @@
     <Compile Include="Models\ba_persona.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ba_preguntas.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ba_respuestausuario.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ba_roles.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

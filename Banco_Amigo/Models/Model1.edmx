@@ -19,6 +19,23 @@
           <Property Name="pe_correo" Type="varchar" MaxLength="50" />
           <Property Name="pe_estado" Type="varchar" MaxLength="1" />
         </EntityType>
+        <EntityType Name="ba_preguntas">
+          <Key>
+            <PropertyRef Name="pr_idpregunta" />
+          </Key>
+          <Property Name="pr_idpregunta" Type="int" Nullable="false" />
+          <Property Name="pr_pregunta" Type="varchar" MaxLength="50" />
+          <Property Name="pr_estado" Type="varchar" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="ba_respuestausuario">
+          <Key>
+            <PropertyRef Name="ru_idrespuesta" />
+          </Key>
+          <Property Name="ru_idrespuesta" Type="int" Nullable="false" />
+          <Property Name="ru_idpregunta" Type="int" Nullable="false" />
+          <Property Name="ru_idusuario" Type="int" Nullable="false" />
+          <Property Name="ru_respuesta" Type="varchar" MaxLength="20" />
+        </EntityType>
         <EntityType Name="ba_roles">
           <Key>
             <PropertyRef Name="ro_idrol" />
@@ -40,6 +57,30 @@
           <Property Name="us_fecha_modificacion" Type="date" />
           <Property Name="us_estado" Type="varchar" MaxLength="1" />
         </EntityType>
+        <Association Name="FK_ba_respuestausuario_ba_preguntas">
+          <End Role="ba_preguntas" Type="Self.ba_preguntas" Multiplicity="1" />
+          <End Role="ba_respuestausuario" Type="Self.ba_respuestausuario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ba_preguntas">
+              <PropertyRef Name="pr_idpregunta" />
+            </Principal>
+            <Dependent Role="ba_respuestausuario">
+              <PropertyRef Name="ru_idrespuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ba_respuestausuario_ba_usuarios">
+          <End Role="ba_usuarios" Type="Self.ba_usuarios" Multiplicity="1" />
+          <End Role="ba_respuestausuario" Type="Self.ba_respuestausuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ba_usuarios">
+              <PropertyRef Name="us_idusuario" />
+            </Principal>
+            <Dependent Role="ba_respuestausuario">
+              <PropertyRef Name="ru_idusuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ba_usuarios_ba_persona">
           <End Role="ba_persona" Type="Self.ba_persona" Multiplicity="1" />
           <End Role="ba_usuarios" Type="Self.ba_usuarios" Multiplicity="*" />
@@ -72,8 +113,18 @@
         </Function>
         <EntityContainer Name="BancoAmigoModelStoreContainer">
           <EntitySet Name="ba_persona" EntityType="Self.ba_persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ba_preguntas" EntityType="Self.ba_preguntas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ba_respuestausuario" EntityType="Self.ba_respuestausuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ba_roles" EntityType="Self.ba_roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ba_usuarios" EntityType="Self.ba_usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ba_respuestausuario_ba_preguntas" Association="Self.FK_ba_respuestausuario_ba_preguntas">
+            <End Role="ba_preguntas" EntitySet="ba_preguntas" />
+            <End Role="ba_respuestausuario" EntitySet="ba_respuestausuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ba_respuestausuario_ba_usuarios" Association="Self.FK_ba_respuestausuario_ba_usuarios">
+            <End Role="ba_usuarios" EntitySet="ba_usuarios" />
+            <End Role="ba_respuestausuario" EntitySet="ba_respuestausuario" />
+          </AssociationSet>
           <AssociationSet Name="FK_ba_usuarios_ba_persona" Association="Self.FK_ba_usuarios_ba_persona">
             <End Role="ba_persona" EntitySet="ba_persona" />
             <End Role="ba_usuarios" EntitySet="ba_usuarios" />
@@ -125,6 +176,7 @@
           <Property Name="us_estado" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ba_persona" Relationship="Self.FK_ba_usuarios_ba_persona" FromRole="ba_usuarios" ToRole="ba_persona" />
           <NavigationProperty Name="ba_roles" Relationship="Self.FK_ba_usuarios_ba_roles" FromRole="ba_usuarios" ToRole="ba_roles" />
+          <NavigationProperty Name="ba_respuestausuario" Relationship="BancoAmigoModel.FK_ba_respuestausuario_ba_usuarios" FromRole="ba_usuarios" ToRole="ba_respuestausuario" />
         </EntityType>
         <Association Name="FK_ba_usuarios_ba_persona">
           <End Role="ba_persona" Type="Self.ba_persona" Multiplicity="1" />
@@ -168,7 +220,61 @@
             <Parameter Name="cod" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
+          <EntitySet Name="ba_preguntas" EntityType="BancoAmigoModel.ba_preguntas" />
+          <EntitySet Name="ba_respuestausuario" EntityType="BancoAmigoModel.ba_respuestausuario" />
+          <AssociationSet Name="FK_ba_respuestausuario_ba_preguntas" Association="BancoAmigoModel.FK_ba_respuestausuario_ba_preguntas">
+            <End Role="ba_preguntas" EntitySet="ba_preguntas" />
+            <End Role="ba_respuestausuario" EntitySet="ba_respuestausuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ba_respuestausuario_ba_usuarios" Association="BancoAmigoModel.FK_ba_respuestausuario_ba_usuarios">
+            <End Role="ba_usuarios" EntitySet="ba_usuarios" />
+            <End Role="ba_respuestausuario" EntitySet="ba_respuestausuario" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ba_preguntas">
+          <Key>
+            <PropertyRef Name="pr_idpregunta" />
+          </Key>
+          <Property Name="pr_idpregunta" Type="Int32" Nullable="false" />
+          <Property Name="pr_pregunta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pr_estado" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ba_respuestausuario" Relationship="BancoAmigoModel.FK_ba_respuestausuario_ba_preguntas" FromRole="ba_preguntas" ToRole="ba_respuestausuario" />
+        </EntityType>
+        <EntityType Name="ba_respuestausuario">
+          <Key>
+            <PropertyRef Name="ru_idrespuesta" />
+          </Key>
+          <Property Name="ru_idrespuesta" Type="Int32" Nullable="false" />
+          <Property Name="ru_idpregunta" Type="Int32" Nullable="false" />
+          <Property Name="ru_idusuario" Type="Int32" Nullable="false" />
+          <Property Name="ru_respuesta" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ba_preguntas" Relationship="BancoAmigoModel.FK_ba_respuestausuario_ba_preguntas" FromRole="ba_respuestausuario" ToRole="ba_preguntas" />
+          <NavigationProperty Name="ba_usuarios" Relationship="BancoAmigoModel.FK_ba_respuestausuario_ba_usuarios" FromRole="ba_respuestausuario" ToRole="ba_usuarios" />
+        </EntityType>
+        <Association Name="FK_ba_respuestausuario_ba_preguntas">
+          <End Type="BancoAmigoModel.ba_preguntas" Role="ba_preguntas" Multiplicity="1" />
+          <End Type="BancoAmigoModel.ba_respuestausuario" Role="ba_respuestausuario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ba_preguntas">
+              <PropertyRef Name="pr_idpregunta" />
+            </Principal>
+            <Dependent Role="ba_respuestausuario">
+              <PropertyRef Name="ru_idrespuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ba_respuestausuario_ba_usuarios">
+          <End Type="BancoAmigoModel.ba_usuarios" Role="ba_usuarios" Multiplicity="1" />
+          <End Type="BancoAmigoModel.ba_respuestausuario" Role="ba_respuestausuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ba_usuarios">
+              <PropertyRef Name="us_idusuario" />
+            </Principal>
+            <Dependent Role="ba_respuestausuario">
+              <PropertyRef Name="ru_idusuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -214,6 +320,25 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_ValidaRegistroUsuario" FunctionName="BancoAmigoModel.Store.sp_ValidaRegistroUsuario" />
+          <EntitySetMapping Name="ba_preguntas">
+            <EntityTypeMapping TypeName="BancoAmigoModel.ba_preguntas">
+              <MappingFragment StoreEntitySet="ba_preguntas">
+                <ScalarProperty Name="pr_estado" ColumnName="pr_estado" />
+                <ScalarProperty Name="pr_pregunta" ColumnName="pr_pregunta" />
+                <ScalarProperty Name="pr_idpregunta" ColumnName="pr_idpregunta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ba_respuestausuario">
+            <EntityTypeMapping TypeName="BancoAmigoModel.ba_respuestausuario">
+              <MappingFragment StoreEntitySet="ba_respuestausuario">
+                <ScalarProperty Name="ru_respuesta" ColumnName="ru_respuesta" />
+                <ScalarProperty Name="ru_idusuario" ColumnName="ru_idusuario" />
+                <ScalarProperty Name="ru_idpregunta" ColumnName="ru_idpregunta" />
+                <ScalarProperty Name="ru_idrespuesta" ColumnName="ru_idrespuesta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

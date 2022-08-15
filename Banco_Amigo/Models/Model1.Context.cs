@@ -30,6 +30,8 @@ namespace Banco_Amigo.Models
         public virtual DbSet<ba_persona> ba_persona { get; set; }
         public virtual DbSet<ba_roles> ba_roles { get; set; }
         public virtual DbSet<ba_usuarios> ba_usuarios { get; set; }
+        public virtual DbSet<ba_preguntas> ba_preguntas { get; set; }
+        public virtual DbSet<ba_respuestausuario> ba_respuestausuario { get; set; }
     
         public virtual int sp_ValidaRegistroUsuario(string correo, string clave, ObjectParameter cod, ObjectParameter mensaje)
         {

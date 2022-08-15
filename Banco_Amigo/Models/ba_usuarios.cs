@@ -16,10 +16,16 @@ namespace Banco_Amigo.Models
     
     public partial class ba_usuarios
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ba_usuarios()
+        {
+            this.ba_respuestausuario = new HashSet<ba_respuestausuario>();
+        }
+    
         public int us_idusuario { get; set; }
         public int us_idpersona { get; set; }
         public int us_idrol { get; set; }
-        [Required(ErrorMessage ="El usuario es requerido")]
+        [Required(ErrorMessage = "El usuario es requerido")]
         [DisplayName("Usuario")]
         public string us_usuario { get; set; }
         [Required(ErrorMessage = "La contraseña es requerida")]
@@ -31,5 +37,7 @@ namespace Banco_Amigo.Models
     
         public virtual ba_persona ba_persona { get; set; }
         public virtual ba_roles ba_roles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ba_respuestausuario> ba_respuestausuario { get; set; }
     }
 }
