@@ -54,7 +54,8 @@ namespace Banco_Amigo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona, 
             string txt_usuario, string txt_clave, string txt_ConfirmarClave, 
-            string pregunta1, string txt_respuesta1, string pregunta2, string txt_respuesta2, string pregunta3, string txt_respuesta3, string pregunta4, string txt_respuesta4, string pregunta5, string txt_respuesta5)
+            string pregunta1, string pregunta2, string pregunta3, string pregunta4, string pregunta5, 
+            string txt_respuesta1, string txt_respuesta2, string txt_respuesta3, string txt_respuesta4, string txt_respuesta5)
         {
             if (ModelState.IsValid)
             {
@@ -209,6 +210,112 @@ namespace Banco_Amigo.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        // GET: ba_persona/ForgetPassword/5
+        public ActionResult ForgetPassword(int? id)
+        {
+            id = 2;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //var respuestas = db.ba_respuestausuario.SqlQuery("select * from ba_respuestausuario where ru_idusuario = 2").ToList();
+            var Respuestas = db.ba_respuestausuario.Where(x => x.ru_idusuario == id).ToList();
+            if (Respuestas == null)
+            {
+                return HttpNotFound();
+            }
+            else {
+                foreach (ba_respuestausuario i in Respuestas)
+                {
+                    var Pregunta = db.ba_preguntas.Where(x => x.pr_idpregunta == i.ru_idpregunta).FirstOrDefault();
+                }
+            }
+
+            var preguntas = db.Database.SqlQuery<ba_preguntas>("select top 3 * from ba_preguntas where pr_idpregunta in (select ru_idpregunta from ba_respuestausuario where ru_idusuario = @p0)and pr_estado = 'A' order by NEWID()",id).ToList();
+
+            //List<ba_preguntas> listaPreguntas = new List<ba_preguntas>();
+            List<ba_respuestausuario> listaRespuestas = new List<ba_respuestausuario>();
+
+            int num_preguntas = 3;
+            foreach (ba_preguntas i in preguntas)
+            {
+                if (num_preguntas == 3) {
+                    ViewBag.lbl_pregunta1 = i.pr_pregunta;
+                    //listaPreguntas.Add(new ba_preguntas { pr_idpregunta = i.pr_idpregunta, pr_pregunta = i.pr_pregunta });
+                    listaRespuestas.Add(new ba_respuestausuario {ru_idpregunta = i.pr_idpregunta, ru_idusuario = id.Value });
+                }
+                else {
+                    if (num_preguntas == 2) {
+                        ViewBag.lbl_pregunta2 = i.pr_pregunta;
+                        //listaPreguntas.Add(new ba_preguntas { pr_idpregunta = i.pr_idpregunta, pr_pregunta = i.pr_pregunta });
+                        listaRespuestas.Add(new ba_respuestausuario { ru_idpregunta = i.pr_idpregunta, ru_idusuario = id.Value });
+                    }
+                    else {
+                        if (num_preguntas == 1)
+                        {
+                            ViewBag.lbl_pregunta3 = i.pr_pregunta;
+                            //listaPreguntas.Add(new ba_preguntas { pr_idpregunta = i.pr_idpregunta, pr_pregunta = i.pr_pregunta });
+                            listaRespuestas.Add(new ba_respuestausuario { ru_idpregunta = i.pr_idpregunta, ru_idusuario = id.Value });
+                        }
+                    }
+                }
+                num_preguntas--;
+            }
+            //TempData["listaPreguntas"] = listaPreguntas;
+            TempData["listaRespuestas"] = listaRespuestas;
+            return View(listaRespuestas);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgetPassword([Bind(Include = "pr_idpregunta,pr_pregunta,pr_estado")] ba_preguntas ba_preguntas,
+            string txt_respuesta1, string txt_respuesta2, string txt_respuesta3)
+        {
+            if (ModelState.IsValid)
+            {
+
+                //var listaPreguntas = TempData["listaPreguntas"] as IEnumerable<ba_preguntas>;
+                var listaRespuestas= TempData["listaRespuestas"] as IEnumerable<ba_respuestausuario>;
+
+                int num_preguntas = 3;
+                foreach (ba_respuestausuario r in listaRespuestas)
+                {
+                    if (num_preguntas == 3)
+                        r.ru_respuesta = txt_respuesta1;
+                    else
+                    {
+                        if (num_preguntas == 2)
+                            r.ru_respuesta = txt_respuesta2;
+                        else
+                        {
+                            if (num_preguntas == 1)
+                                r.ru_respuesta = txt_respuesta3;
+                        }
+                    }
+                    num_preguntas--;
+                }
+                int ErrorRespuesta = 0;
+                foreach (ba_respuestausuario r in listaRespuestas)
+                {
+                    var Result = db.ba_respuestausuario.Where(x => x.ru_idpregunta == r.ru_idpregunta)
+                                                        .Where(x => x.ru_respuesta == r.ru_respuesta)
+                                                        .Where(x => x.ru_idusuario == r.ru_idusuario).ToList();
+                    if (Result == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    if (Result.Count() == 0) {
+                        ErrorRespuesta++;
+                        ViewData["Mensaje"] = "Una pregunta falló";
+                        return RedirectToAction("ForgetPassword");
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return View();
         }
     }
 }
