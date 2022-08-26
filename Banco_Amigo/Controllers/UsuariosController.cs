@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
 using Banco_Amigo.Models;
@@ -140,6 +142,7 @@ namespace Banco_Amigo.Controllers
             base.Dispose(disposing);
         }
 
+        //GET
         public ActionResult Login()
         {
             ba_usuarios ba_usuarios = new ba_usuarios();
@@ -152,14 +155,19 @@ namespace Banco_Amigo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var usuarios = db.ba_usuarios.Include(b => b.ba_persona).Include(b => b.ba_roles);
-                List<ba_usuarios> ba_usuario1 = usuarios.ToList();
+                //var Result = db.ba_respuestausuario.Where(x => x.ru_idpregunta == r.ru_idpregunta);
+                var usuario = db.ba_usuarios.Where(x => x.us_usuario == ba_usuarios.us_usuario)
+                                            .Where(x => x.us_clave == ba_usuarios.us_clave).ToList();
 
-                foreach(var item in ba_usuario1) {
-                    if (item.us_usuario == ba_usuarios.us_usuario && item.us_clave == ba_usuarios.us_clave)
-                    {
-                        return RedirectToAction("Index");
-                    }
+                //var preguntas = db.Database.SqlQuery<ba_preguntas>("select top 3 * from ba_preguntas where pr_idpregunta in (select ru_idpregunta from ba_respuestausuario where ru_idusuario = @p0)and pr_estado = 'A' order by NEWID()", id,).ToList();
+
+                if (usuario.Count>0)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "Usuario y/o clave incorrectos.";
                 }
             }
             return View(ba_usuarios);
