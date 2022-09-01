@@ -12,6 +12,8 @@ namespace Banco_Amigo.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class BancoAmigoEntities : DbContext
     {
@@ -28,5 +30,20 @@ namespace Banco_Amigo.Models
         public virtual DbSet<ba_persona> ba_persona { get; set; }
         public virtual DbSet<ba_roles> ba_roles { get; set; }
         public virtual DbSet<ba_usuarios> ba_usuarios { get; set; }
+        public virtual DbSet<ba_respuestausuario> ba_respuestausuario { get; set; }
+        public virtual DbSet<ba_preguntas> ba_preguntas { get; set; }
+    
+        public virtual int sp_ValidaRegistroUsuario(string correo, string clave, ObjectParameter cod, ObjectParameter mensaje)
+        {
+            var correoParameter = correo != null ?
+                new ObjectParameter("correo", correo) :
+                new ObjectParameter("correo", typeof(string));
+    
+            var claveParameter = clave != null ?
+                new ObjectParameter("clave", clave) :
+                new ObjectParameter("clave", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ValidaRegistroUsuario", correoParameter, claveParameter, cod, mensaje);
+        }
     }
 }
