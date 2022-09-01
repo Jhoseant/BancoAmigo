@@ -258,5 +258,36 @@ namespace Banco_Amigo.Controllers
             }
             return View();
         }
+
+        //GET
+        public ActionResult Login2()
+        {
+            ba_usuarios ba_usuarios = new ba_usuarios();
+            return View(ba_usuarios);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login2([Bind(Include = "us_idusuario,us_idpersona,us_idrol,us_usuario,us_clave,us_fecha_registro,us_fecha_modificacion,us_estado")] ba_usuarios ba_usuarios)
+        {
+            if (ModelState.IsValid)
+            {
+                //var Result = db.ba_respuestausuario.Where(x => x.ru_idpregunta == r.ru_idpregunta);
+                var usuario = db.ba_usuarios.Where(x => x.us_usuario == ba_usuarios.us_usuario)
+                                            .Where(x => x.us_clave == ba_usuarios.us_clave).ToList();
+
+                //var preguntas = db.Database.SqlQuery<ba_preguntas>("select top 3 * from ba_preguntas where pr_idpregunta in (select ru_idpregunta from ba_respuestausuario where ru_idusuario = @p0)and pr_estado = 'A' order by NEWID()", id,).ToList();
+
+                if (usuario.Count > 0)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "Usuario y/o clave incorrectos.";
+                }
+            }
+            return View(ba_usuarios);
+        }
     }
 }
