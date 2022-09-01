@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Banco_Amigo.Permisos;
 
 namespace Banco_Amigo.Controllers
 {
+    [ValidarSesion]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -25,6 +27,12 @@ namespace Banco_Amigo.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult CerrarSesion()
+        {
+            Session["Usuario"] = null;
+            return RedirectToAction("Login", "Login");
         }
     }
 }

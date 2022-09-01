@@ -36,7 +36,8 @@ namespace Banco_Amigo.Controllers
 
                 if (usuario.Count > 0)
                 {
-                    return RedirectToAction("Index", "Persona");
+                    Session["Usuario"] = ba_usuarios;
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -45,7 +46,6 @@ namespace Banco_Amigo.Controllers
             }
             return View(ba_usuarios);
         }
-
 
         // GET: Login/NewUser
         public ActionResult NewUser()
@@ -58,6 +58,8 @@ namespace Banco_Amigo.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult NewUser([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona,
             string txt_usuario, string txt_clave, string txt_ConfirmarClave,
             string pregunta1, string pregunta2, string pregunta3, string pregunta4, string pregunta5,
@@ -147,7 +149,7 @@ namespace Banco_Amigo.Controllers
                     db.ba_respuestausuario.Add(i);
                     db.SaveChanges();
                 }
-                return RedirectToAction("Index", "Persona");
+                return RedirectToAction("Index", "Home");
             }
             return View(Persona);
         }
@@ -254,7 +256,7 @@ namespace Banco_Amigo.Controllers
                         return RedirectToAction("ForgetPassword");
                     }
                 }
-                return RedirectToAction("Index", "Persona");
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }
