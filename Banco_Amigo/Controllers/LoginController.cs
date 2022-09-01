@@ -36,7 +36,7 @@ namespace Banco_Amigo.Controllers
 
                 if (usuario.Count > 0)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Persona");
                 }
                 else
                 {
@@ -147,7 +147,7 @@ namespace Banco_Amigo.Controllers
                     db.ba_respuestausuario.Add(i);
                     db.SaveChanges();
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Persona");
             }
             return View(Persona);
         }
@@ -254,14 +254,9 @@ namespace Banco_Amigo.Controllers
                         return RedirectToAction("ForgetPassword");
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Persona");
             }
             return View();
-        }
-        // GET:
-        public ActionResult Index()
-        {
-            return View(db.ba_persona.ToList());
         }
     }
 }
