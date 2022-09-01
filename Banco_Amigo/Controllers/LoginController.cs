@@ -58,7 +58,7 @@ namespace Banco_Amigo.Controllers
             return View();
         }
 
-        public ActionResult Create([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona,
+        public ActionResult NewUser([Bind(Include = "pe_idpersona,pe_cedula,pe_nombre,pe_apellido,pe_fecha_nacimiento,pe_direccion,pe_sexo,pe_correo,pe_estado")] ba_persona Persona,
             string txt_usuario, string txt_clave, string txt_ConfirmarClave,
             string pregunta1, string pregunta2, string pregunta3, string pregunta4, string pregunta5,
             string txt_respuesta1, string txt_respuesta2, string txt_respuesta3, string txt_respuesta4, string txt_respuesta5)
@@ -258,36 +258,10 @@ namespace Banco_Amigo.Controllers
             }
             return View();
         }
-
-        //GET
-        public ActionResult Login2()
+        // GET:
+        public ActionResult Index()
         {
-            ba_usuarios ba_usuarios = new ba_usuarios();
-            return View(ba_usuarios);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login2([Bind(Include = "us_idusuario,us_idpersona,us_idrol,us_usuario,us_clave,us_fecha_registro,us_fecha_modificacion,us_estado")] ba_usuarios ba_usuarios)
-        {
-            if (ModelState.IsValid)
-            {
-                //var Result = db.ba_respuestausuario.Where(x => x.ru_idpregunta == r.ru_idpregunta);
-                var usuario = db.ba_usuarios.Where(x => x.us_usuario == ba_usuarios.us_usuario)
-                                            .Where(x => x.us_clave == ba_usuarios.us_clave).ToList();
-
-                //var preguntas = db.Database.SqlQuery<ba_preguntas>("select top 3 * from ba_preguntas where pr_idpregunta in (select ru_idpregunta from ba_respuestausuario where ru_idusuario = @p0)and pr_estado = 'A' order by NEWID()", id,).ToList();
-
-                if (usuario.Count > 0)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ViewData["Mensaje"] = "Usuario y/o clave incorrectos.";
-                }
-            }
-            return View(ba_usuarios);
+            return View(db.ba_persona.ToList());
         }
     }
 }
