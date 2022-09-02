@@ -28,13 +28,33 @@ namespace Banco_Amigo.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Request.Form["ForgetPassword"] != null)
+                {
+                    //string str = Request.Params["us_usuario"];
+                    var usuario = db.ba_usuarios.Where(x => x.us_usuario == ba_usuarios.us_usuario).ToList();
+
+                    if (usuario.Count > 0)
+                    {
+                        foreach (ba_usuarios i in usuario)
+                        {
+                            return RedirectToAction("ForgetPassword", "Login", new { id = i.us_idusuario });
+                            //var Pregunta = db.ba_preguntas.Where(x => x.pr_idpregunta == i.ru_idpregunta).FirstOrDefault();
+                        }
+                        return RedirectToAction("ForgetPassword", "Login", new { id = 2 });
+                    }
+                    else {
+                        ViewData["Mensaje"] = "Ingrese un usuario Correcto";
+                        return View(ba_usuarios);
+                    }
+                    
+                }
                 //var Result = db.ba_respuestausuario.Where(x => x.ru_idpregunta == r.ru_idpregunta);
-                var usuario = db.ba_usuarios.Where(x => x.us_usuario == ba_usuarios.us_usuario)
+                var login = db.ba_usuarios.Where(x => x.us_usuario == ba_usuarios.us_usuario)
                                             .Where(x => x.us_clave == ba_usuarios.us_clave).ToList();
 
                 //var preguntas = db.Database.SqlQuery<ba_preguntas>("select top 3 * from ba_preguntas where pr_idpregunta in (select ru_idpregunta from ba_respuestausuario where ru_idusuario = @p0)and pr_estado = 'A' order by NEWID()", id,).ToList();
 
-                if (usuario.Count > 0)
+                if (login.Count > 0)
                 {
                     Session["Usuario"] = ba_usuarios;
                     return RedirectToAction("Index", "Home");
@@ -158,7 +178,7 @@ namespace Banco_Amigo.Controllers
         // GET: Login/ForgetPassword/5
         public ActionResult ForgetPassword(int? id)
         {
-            id = 2;
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
