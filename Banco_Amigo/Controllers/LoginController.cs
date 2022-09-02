@@ -261,6 +261,7 @@ namespace Banco_Amigo.Controllers
                     num_preguntas--;
                 }
                 int ErrorRespuesta = 0;
+                int idUsuario = 0;
                 foreach (ba_respuestausuario r in listaRespuestas)
                 {
                     var Result = db.ba_respuestausuario.Where(x => x.ru_idpregunta == r.ru_idpregunta)
@@ -275,10 +276,54 @@ namespace Banco_Amigo.Controllers
                         ViewData["Mensaje"] = "Una pregunta falló";
                         return RedirectToAction("ForgetPassword");
                     }
+                    idUsuario = r.ru_idusuario;
                 }
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ChangePassword", "Login", new { id = idUsuario });
             }
             return View();
         }
+
+        // GET: Usuarios/Edit/5
+        public ActionResult ChangePassword(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ba_usuarios ba_usuarios = db.ba_usuarios.Find(id);
+            if (ba_usuarios == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.us_idpersona = new SelectList(db.ba_persona, "pe_idpersona", "pe_cedula", ba_usuarios.us_idpersona);
+            ViewBag.us_idrol = new SelectList(db.ba_roles, "ro_idrol", "ro_rol", ba_usuarios.us_idrol);
+            return View(ba_usuarios);
+        }
+
+        // POST: Usuarios/Edit/5
+        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
+        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword([Bind(Include = "us_idusuario,us_idpersona,us_idrol,us_usuario,us_clave,us_fecha_registro,us_fecha_modificacion,us_estado")] ba_usuarios ba_usuarios,
+                                string txt_nuevaclave, string txt_confirmarclave)
+        {
+            if (ModelState.IsValid)
+            {
+                if (txt_nuevaclave == txt_confirmarclave)
+                {
+                    int updateclave = db.Database.ExecuteSqlCommand("update ba_usuarios set us_clave = @p0 where us_idusuario = @p1", txt_nuevaclave, ba_usuarios.us_idusuario);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "La nueva clave no coincide.";
+                }
+            }
+            ViewBag.us_idpersona = new SelectList(db.ba_persona, "pe_idpersona", "pe_cedula", ba_usuarios.us_idpersona);
+            ViewBag.us_idrol = new SelectList(db.ba_roles, "ro_idrol", "ro_rol", ba_usuarios.us_idrol);
+            return View(ba_usuarios);
+        }
+
     }
 }
