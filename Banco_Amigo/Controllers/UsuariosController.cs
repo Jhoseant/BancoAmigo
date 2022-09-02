@@ -94,13 +94,20 @@ namespace Banco_Amigo.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "us_idusuario,us_idpersona,us_idrol,us_usuario,us_clave,us_fecha_registro,us_fecha_modificacion,us_estado")] ba_usuarios ba_usuarios)
+        public ActionResult Edit([Bind(Include = "us_idusuario,us_idpersona,us_idrol,us_usuario,us_clave,us_fecha_registro,us_fecha_modificacion,us_estado")] ba_usuarios ba_usuarios,
+                                string txt_nuevaclave, string txt_confirmarclave )
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ba_usuarios).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (txt_nuevaclave == txt_confirmarclave)
+                {
+                    int updateclave = db.Database.ExecuteSqlCommand("update ba_usuarios set us_clave = @p0 where us_idusuario = @p1", txt_nuevaclave, ba_usuarios.us_idusuario);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "La nueva clave no coincide.";
+                }                
             }
             ViewBag.us_idpersona = new SelectList(db.ba_persona, "pe_idpersona", "pe_cedula", ba_usuarios.us_idpersona);
             ViewBag.us_idrol = new SelectList(db.ba_roles, "ro_idrol", "ro_rol", ba_usuarios.us_idrol);
