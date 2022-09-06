@@ -1,7 +1,7 @@
 ﻿@model Banco_Amigo.Models.ba_persona
 @{
     ViewBag.Title = "Registro de usuario";
-    Layout = null;
+    Layout = "~/Views/Shared/Out_Layout.cshtml";
 }
 
 <h2>Nuevo Usuario</h2>
@@ -116,23 +116,27 @@
         </!--div-->
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="lbl_Usuario">Preguntas de Seguridad</label>
+            <label class="control-label col-md-2" for="lbl_Usuario">Preguntas de Seguridad 1</label>
             <div class="col-md-10">
                 @Html.DropDownList("pregunta1", null, htmlAttributes: new { @class = "form-control" })
                 <input class="form-control text_box single_line" id="txt_respuesta1" name="txt_respuesta1" type="text" value="">
             </div>
+            <label class="control-label col-md-2" for="lbl_Usuario">Preguntas de Seguridad 2</label>
             <div class="col-md-10">
                 @Html.DropDownList("pregunta2", null, htmlAttributes: new { @class = "form-control" })
                 <input class="form-control text_box single_line" id="txt_respuesta2" name="txt_respuesta2" type="text" value="">
             </div>
+            <label class="control-label col-md-2" for="lbl_Usuario">Preguntas de Seguridad 3</label>
             <div class="col-md-10">
                 @Html.DropDownList("pregunta3", null, htmlAttributes: new { @class = "form-control" })
                 <input class="form-control text_box single_line" id="txt_respuesta3" name="txt_respuesta3" type="text" value="">
             </div>
+            <label class="control-label col-md-2" for="lbl_Usuario">Preguntas de Seguridad 4</label>
             <div class="col-md-10">
                 @Html.DropDownList("pregunta4", null, htmlAttributes: new { @class = "form-control" })
                 <input class="form-control text_box single_line" id="txt_respuesta4" name="txt_respuesta4" type="text" value="">
             </div>
+            <label class="control-label col-md-2" for="lbl_Usuario">Preguntas de Seguridad 5</label>
             <div class="col-md-10">
                 @Html.DropDownList("pregunta5", null, htmlAttributes: new { @class = "form-control" })
                 <input class="form-control text_box single_line" id="txt_respuesta5" name="txt_respuesta5" type="text" value="">

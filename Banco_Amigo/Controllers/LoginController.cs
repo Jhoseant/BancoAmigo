@@ -91,7 +91,7 @@ namespace Banco_Amigo.Controllers
                 if (txt_clave != txt_ConfirmarClave)
                 {
                     ViewData["Mensaje"] = "Las contraseñas no coinciden";
-                    return View();
+                    return NewUser();
                 }
 
                 //Llama Sp de Validación de registro de usuario sp_ValidaRegistroUsuario.
@@ -111,7 +111,7 @@ namespace Banco_Amigo.Controllers
                 if (codParameter.Value.ToString() != "00")
                 {
                     ViewData["Mensaje"] = mensajeParameter.Value.ToString();
-                    return View();
+                    return NewUser();
                 }
 
                 //calcula el nuevo ID de persona
